@@ -75,4 +75,20 @@ public class QuizRepository {
                 .map(quiz -> new QuizDetail(quiz.name(), quiz.questions().size(), quiz.difficulty()))
                 .collect(Collectors.toSet());
     }
+
+    public Question createQuestionToQuizById(int id, Question question) {
+        Quiz quiz = getQuizById(id);
+        quiz.questions().add(question);
+        return question;
+    }
+
+    public boolean deleteQuestionByIdFromQuiz(int quizId, int questionId) {
+        Quiz quiz = getQuizById(quizId);
+        return quiz.questions().remove(getQuestionById(quiz, questionId));
+    }
+
+    private Question getQuestionById(Quiz quiz, int id) {
+        Optional<Question> optionalQuestion = quiz.questions().stream().filter(question -> question.id() == id).findFirst();
+        return optionalQuestion.orElse(null);
+    }
 }
