@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.DTO.QuizDetail;
+import com.example.backend.model.Question;
 import com.example.backend.model.Quiz;
 import com.example.backend.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,13 @@ public class QuizService {
 
     public Set<QuizDetail> getQuizzesDetails() {
         return quizRepository.getQuizzesDetails();
+    }
+
+    public Question createQuestionToQuizById(int id, Question question) {
+        return quizRepository.createQuestionToQuizById(id, question);
+    }
+
+    public boolean deleteQuestionByIdFromQuiz(int quizId, int questionId) {
+        return quizRepository.deleteQuestionByIdFromQuiz(quizId, questionId);
     }
 }

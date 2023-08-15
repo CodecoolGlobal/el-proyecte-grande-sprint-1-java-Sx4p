@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.DTO.QuizDetail;
+import com.example.backend.model.Question;
 import com.example.backend.model.Quiz;
 import com.example.backend.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,16 @@ public class QuizController {
     @GetMapping("/all/details")
     public Set<QuizDetail> getDetailsOfQuizzes () {
         return quizService.getQuizzesDetails();
+    }
+
+    @PostMapping("/{id}/question")
+    public Question addQuestionToQuizById(@PathVariable int id, @RequestBody Question question) {
+        return quizService.createQuestionToQuizById(id, question);
+    }
+
+    @DeleteMapping("/{qid}/question/{id}")
+    public boolean deleteQuestionByIdFromQuizById(@PathVariable("qid") int quizId, @PathVariable("id") int questionId) {
+        return quizService.deleteQuestionByIdFromQuiz(quizId, questionId);
     }
 
 }
