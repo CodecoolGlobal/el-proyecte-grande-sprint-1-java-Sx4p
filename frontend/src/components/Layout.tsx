@@ -9,7 +9,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import QuizIcon from '@mui/icons-material/Quiz';
 import CreateIcon from '@mui/icons-material/Create';
 import {OverridableComponent} from "@mui/material/OverridableComponent";
-import {Link} from "react-router-dom"
+import {Link, Outlet} from "react-router-dom"
 
 interface Page {
     name: string;
@@ -25,6 +25,7 @@ const pages: Page[] = [
 
 function Layout(): ReactElement {
     return (
+        <>
         <Container className={"header"}>
             <AppBar variant="elevation">
                 <Toolbar>
@@ -61,6 +62,8 @@ function Layout(): ReactElement {
                 </Toolbar>
             </AppBar>
         </Container>
+        <Outlet/>
+    </>
     );
 }
 
