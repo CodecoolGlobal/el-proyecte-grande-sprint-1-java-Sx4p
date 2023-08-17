@@ -2,9 +2,9 @@ import {QuizDetails} from "../pages/QuizList";
 import {ReactElement} from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import {Card, CardActions, CardContent, Divider, Paper, Stack} from "@mui/material";
+import {Card, CardActions, CardContent} from "@mui/material";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import WeightIcon from '@mui/icons-material/FitnessCenter';
 
 export default function QuizListElement({name, author, questionQuantity, difficulty}: QuizDetails): ReactElement {
     return (
@@ -13,7 +13,7 @@ export default function QuizListElement({name, author, questionQuantity, difficu
                 <CardContent sx={{display: "flex", alignItems: "center", width: "80%", justifyContent: "space-between", flexDirection: {xs: "column", md: "row"}}}>
                     <Typography variant={"h6"} fontWeight={"bold"}>{name}</Typography>
                     <Typography>Questions: {questionQuantity}</Typography>
-                    <Typography color={difficulty}>difficulty</Typography>
+                    <WeightIcon htmlColor={difficulty}/>
 
                     <Typography>Author: {author}</Typography>
                 </CardContent>
