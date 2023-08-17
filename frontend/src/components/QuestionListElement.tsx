@@ -26,10 +26,10 @@ export const QuestionListElement = ({question}: Props) => {
         }}>
             {question.name}
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}} sx={{justifyContent: "center"}}>
-                {question.answers.map((answer: Answer) => (<Grid item xs={5} sx={{
+                {question.answers.map((answer: Answer, index: number) => (<Grid item xs={5} sx={{
                         padding: 2, borderRadius: 2, border: "1px solid",
                         borderColor: "primary.dark", margin: "5px"
-                    }}>{answer.name}</Grid>)
+                    }} key={index}>{answer.name}</Grid>)
                 )}
             </Grid>
         </Paper>
