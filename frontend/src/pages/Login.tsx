@@ -1,32 +1,14 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
 import {ReactElement, useContext} from "react";
-import {ThemeContext} from "../App";
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="/">
-                QuizBuzz
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 export default function Login(): ReactElement {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,9 +21,7 @@ export default function Login(): ReactElement {
     };
 
     return (
-        <ThemeProvider theme={useContext(ThemeContext)}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -77,10 +57,6 @@ export default function Login(): ReactElement {
                             id="password"
                             autoComplete="current-password"
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -98,8 +74,6 @@ export default function Login(): ReactElement {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
-        </ThemeProvider>
     );
 }
