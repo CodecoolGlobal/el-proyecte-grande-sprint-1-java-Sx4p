@@ -26,34 +26,33 @@ const pages: Page[] = [
 function Layout(): ReactElement {
     return (
         <>
-        <Container className={"header"}>
-            <AppBar variant="elevation">
+            <AppBar variant="elevation" position={"sticky"} sx={{marginBottom: 5}}>
                 <Toolbar>
                     <Typography variant="h6" component="a" href="/"
-                        sx={{
-                            fontWeight: 700,
-                            letterSpacing: '.2rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                            marginLeft: '5px',
-                            marginRight: '8px'
-                        }}>
+                                sx={{
+                                    fontWeight: 700,
+                                    letterSpacing: '.2rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
+                                    marginLeft: '5px',
+                                    marginRight: '8px'
+                                }}>
                         QuizBuzz
                     </Typography>
                     {pages.map((page: Page, i) => (
                         <Link to={page.path}>
-                        <MenuItem key={i}>
-                            <Typography sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                                margin: '3px',
-                                fontWeight: '600'
-                            }}>
-                                <page.icon sx={{marginRight: '8px'}}/>
-                                {page.name}
-                            </Typography>
-                        </MenuItem>
+                            <MenuItem key={i}>
+                                <Typography sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                    margin: '3px',
+                                    fontWeight: '600'
+                                }}>
+                                    <page.icon sx={{marginRight: '8px'}}/>
+                                    {page.name}
+                                </Typography>
+                            </MenuItem>
                         </Link>
                     ))}
                     <Button sx={{marginLeft: "auto"}} href="/login">
@@ -61,9 +60,8 @@ function Layout(): ReactElement {
                     </Button>
                 </Toolbar>
             </AppBar>
-        </Container>
-        <Outlet/>
-    </>
+            <Outlet/>
+        </>
     );
 }
 
