@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {Paper} from "@mui/material";
 
-interface Answer {
+export interface Answer {
     id: number,
     name: string,
     correct: boolean
