@@ -9,42 +9,65 @@ import {
     FormLabel, FormControl
 } from "@mui/material";
 import Radio from '@mui/material/Radio';
-import {FormEvent} from "react";
-import {Question, QuestionListElement} from "./QuestionListElement";
+import {FormEvent, ReactElement, useState} from "react";
+import {Question, Answer, QuestionListElement} from "./QuestionListElement";
 import {AddQuestionPopup} from "./AddQuestionPopup";
-import Box from "@mui/material/Box";
-import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {QuizDifficulty} from "../pages/QuizList";
+import {Quiz} from "@mui/icons-material";
 
-function submitQuiz(e: FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
-    console.log(e);
+interface Quiz {
+    id: number,
+    userId: number,
+    name: string,
+    questions: Question[],
+    creationDate: Date,
+    difficulty: string
 }
 
+const addQuizToDB = (quizData: Quiz) => {
+    return fetch(`/api/quiz/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(quizData),
+    }).then((res) => res.json());
+};
 
-const testQuestions: Question[] = [
-    {
-        id: 1, name: "Q1", answers: [{id: 1, name: "A1", correct: false},
-            {id: 2, name: "A2", correct: false},
-            {id: 3, name: "A3", correct: false},
-            {id: 4, name: "A4", correct: false}]
-    },
-    {
-        id: 2, name: "Q2", answers: [{id: 1, name: "A1", correct: false},
-            {id: 2, name: "A2", correct: false},
-            {id: 3, name: "A3", correct: false},
-            {id: 4, name: "A4", correct: false}]
-    },
-    {
-        id: 2, name: "Q2", answers: [{id: 1, name: "A1", correct: false},
-            {id: 2, name: "A2", correct: false},
-            {id: 3, name: "A3", correct: false},
-            {id: 4, name: "A4", correct: false}]
+export default function QuizForm(): ReactElement {
+    const navigate = useNavigate();
+    const [questions, setQuestions] = useState<Question[]>([]);
+
+    function submitQuiz(e: FormEvent<HTMLFormElement>, questions: Question[]): void {
+        e.preventDefault();
+        const formData: FormData = new FormData(e.currentTarget);
+        const entries: { [p: string]: FormDataEntryValue } = Object.fromEntries(formData.entries());
+
+        const quiz: Quiz = {
+            id: 3, userId: 1, name: entries.title.toString(), questions: questions,
+            creationDate: new Date(), difficulty: entries.diff.toString()
+        };
+        console.log(quiz)
+
+        addQuizToDB(quiz).then(r => {
+            setQuestions([]);
+            navigate("/list")
+        })
+
     }
-]
 
-export default function QuizForm() {
+    const handleSaveQuestion = (question: string, correctAnswer: string, wrongAnswers: string[]) => {
+        let questionIdCounter = 1;
+        const answers: Answer[] = [...wrongAnswers, correctAnswer]
+            .map(answer => ({id: 0, name: answer, correct: answer === correctAnswer}));
+        const questionForSave: Question = {id: questionIdCounter, name: question, answers: answers}
+        setQuestions([...questions, questionForSave]);
+        questionIdCounter++;
+    }
+
     return (
-        <form action="/" onSubmit={submitQuiz}>
+        <form action="/" onSubmit={(e: React.FormEvent<HTMLFormElement>) => submitQuiz(e, questions)}>
             <FormControl sx={{width: "90%", margin: "5%"}}>
                 <FormLabel sx={{
                     fontSize: "40px",
@@ -68,9 +91,10 @@ export default function QuizForm() {
                         color: "text.primary"
                     }}>Difficulty:</Typography>
                     <RadioGroup row>
-                        <FormControlLabel value="easy" control={<Radio/>} label="Easy"></FormControlLabel>
-                        <FormControlLabel value="medium" control={<Radio/>} label="Medium"></FormControlLabel>
-                        <FormControlLabel value="hard" control={<Radio/>} label="Hard"></FormControlLabel>
+                        <FormControlLabel name="diff" value="EASY" control={<Radio/>} label="Easy"></FormControlLabel>
+                        <FormControlLabel name="diff" value="MEDIUM" control={<Radio/>}
+                                          label="Medium"></FormControlLabel>
+                        <FormControlLabel name="diff" value="HARD" control={<Radio/>} label="Hard"></FormControlLabel>
                     </RadioGroup>
                     <Typography component="legend" sx={{
                         marginTop: "5px",
@@ -82,9 +106,11 @@ export default function QuizForm() {
                         minHeight: "20vh", maxHeight: "40vh", overflow: "auto", borderRadius: 2,
                         border: "2px solid", borderColor: "primary.main", padding: "10px", margin: "5px"
                     }}>
-                        {testQuestions.map((question: Question) => (<QuestionListElement question={question}/>))}
+                        //TODO
+{/*                        {questions.map((question: Question, index: number) => (
+                            <QuestionListElement question={question} key={index}/>))}*/}
                     </Stack>
-                    <AddQuestionPopup/>
+                    <AddQuestionPopup handleSaveQuestion={handleSaveQuestion}/>
                     <Button type="submit" variant="outlined" sx={{backgroundColor: "background.paper"}}>Submit</Button>
                 </FormGroup>
             </FormControl>
