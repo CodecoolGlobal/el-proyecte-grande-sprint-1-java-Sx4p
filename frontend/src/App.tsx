@@ -1,28 +1,33 @@
 import React from 'react';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import {Theme} from "@emotion/react";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import QuizList from "./pages/QuizList";
+import QuizForm from "./components/QuizForm";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout/>,
-    children: [
-        {
-            path: "/list",
-            element: <QuizList/>
-        }
-    ]
-  },
-  {
-    path: "/login",
-    element: <Login/>
-  }
+    {
+        path: "/",
+        element: <Layout/>,
+        children: [
+            {
+                path: "/list",
+                element: <QuizList/>
+            },
+            {
+                path: "/create/quiz",
+                element: <QuizForm/>
+            }
+        ]
+    },
+    {
+        path: "/login",
+        element: <Login/>
+    }
 ]);
 
 const theme: Theme = createTheme(
@@ -55,15 +60,16 @@ const theme: Theme = createTheme(
         },
     }
 );
+
 function App() {
-  return (
-      <>
-          <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <RouterProvider router={router}/>
-          </ThemeProvider>
-      </>
-  );
+    return (
+        <>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <RouterProvider router={router}/>
+            </ThemeProvider>
+        </>
+    );
 }
 
 export default App;
