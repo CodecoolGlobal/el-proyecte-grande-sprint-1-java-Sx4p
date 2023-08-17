@@ -2,7 +2,6 @@ import {ReactElement} from "react";
 import {AppBar, SvgIconTypeMap, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import MenuItem from '@mui/material/MenuItem';
 import LoginIcon from '@mui/icons-material/Login';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
@@ -10,6 +9,8 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import CreateIcon from '@mui/icons-material/Create';
 import {OverridableComponent} from "@mui/material/OverridableComponent";
 import {Link, Outlet} from "react-router-dom"
+import Box from "@mui/material/Box";
+import QuizBuzzLogo from "../images/QuizBuzzLogo.png";
 
 interface Page {
     name: string;
@@ -28,20 +29,10 @@ function Layout(): ReactElement {
         <>
             <AppBar variant="elevation" position={"sticky"} sx={{marginBottom: 5}}>
                 <Toolbar>
-                    <Typography variant="h6" component="a" href="/"
-                                sx={{
-                                    fontWeight: 700,
-                                    letterSpacing: '.2rem',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                    marginLeft: '5px',
-                                    marginRight: '8px'
-                                }}>
-                        QuizBuzz
-                    </Typography>
+                    <Box component={"img"} src={QuizBuzzLogo} alt={"QuizBuzz logo"} height={70}/>
                     {pages.map((page: Page, i) => (
-                        <Link to={page.path}>
-                            <MenuItem key={i}>
+                        <Link to={page.path} key={i}>
+                            <MenuItem>
                                 <Typography sx={{
                                     display: 'flex',
                                     alignItems: 'center',
