@@ -10,10 +10,9 @@ import {
 } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import {FormEvent, ReactElement, useState} from "react";
-import {Question, Answer, QuestionListElement} from "./QuestionListElement";
+import {Question, Answer} from "./QuestionListElement";
 import {AddQuestionPopup} from "./AddQuestionPopup";
 import {useNavigate} from "react-router-dom";
-import {QuizDifficulty} from "../pages/QuizList";
 import {Quiz} from "@mui/icons-material";
 
 interface Quiz {
@@ -50,18 +49,17 @@ export default function QuizForm(): ReactElement {
         };
         console.log(quiz)
 
-        addQuizToDB(quiz).then(r => {
+        addQuizToDB(quiz).then(() => {
             setQuestions([]);
             navigate("/list")
         })
-
     }
 
     const handleSaveQuestion = (question: string, correctAnswer: string, wrongAnswers: string[]) => {
         let questionIdCounter = 1;
         const answers: Answer[] = [...wrongAnswers, correctAnswer]
-            .map(answer => ({id: 0, name: answer, correct: answer === correctAnswer}));
-        const questionForSave: Question = {id: questionIdCounter, name: question, answers: answers}
+            .map(answer => ({id: 0, answer: answer, rightAnswer: answer === correctAnswer}));
+        const questionForSave: Question = {id: questionIdCounter, question: question, answers: answers}
         setQuestions([...questions, questionForSave]);
         questionIdCounter++;
     }
