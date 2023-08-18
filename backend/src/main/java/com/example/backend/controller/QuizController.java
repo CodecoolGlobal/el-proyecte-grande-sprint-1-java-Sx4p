@@ -40,6 +40,11 @@ public class QuizController {
         return quizService.getQuizzesDetails();
     }
 
+    @GetMapping("/all/details/my/{id}")
+    public Set<QuizDetail> getQuizzesDetailsOfUserById(@PathVariable int id) {
+        return quizService.getQuizzesDetailsOfUserById(id);
+    }
+
     @PostMapping("/{id}/question")
     public Question addQuestionToQuizById(@PathVariable int id, @RequestBody Question question) {
         return quizService.createQuestionToQuizById(id, question);
