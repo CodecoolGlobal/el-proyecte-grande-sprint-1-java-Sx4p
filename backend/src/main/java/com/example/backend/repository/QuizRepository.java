@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class QuizRepository {
-    private final Set<Quiz> quizzes = new HashSet<>(Set.of(new Quiz(1, 26, "JS Basics", new HashSet<>(
+    private final Set<Quiz> quizzes = new HashSet<>(Set.of(new Quiz(1, 25, "JS Basics", new HashSet<>(
                     Set.of(new Question(11, "Which are the primitive types in JavaScript?",
                                     Set.of(new Answer(111, "number, string, boolean, undefined, null, symbol, bigInt", true),
                                             new Answer(112, "number, string, boolean, undefined, null, symbol", false),
@@ -72,6 +72,12 @@ public class QuizRepository {
 
     public Set<QuizDetail> getQuizzesDetails() {
         return quizzes.stream()
+                .map(quiz -> new QuizDetail(quiz.name(), quiz.questions().size(), quiz.difficulty()))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<QuizDetail> getQuizzesDetailsOfUserById(int id) {
+        return quizzes.stream().filter(quiz -> quiz.userId() == id)
                 .map(quiz -> new QuizDetail(quiz.name(), quiz.questions().size(), quiz.difficulty()))
                 .collect(Collectors.toSet());
     }

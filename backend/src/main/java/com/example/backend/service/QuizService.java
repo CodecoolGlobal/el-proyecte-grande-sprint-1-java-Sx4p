@@ -35,6 +35,10 @@ public class QuizService {
         return quizRepository.getQuizzesDetails();
     }
 
+    public Set<QuizDetail> getQuizzesDetailsOfUserById(int id) {
+        return quizRepository.getQuizzesDetailsOfUserById(id);
+    }
+
     public Question createQuestionToQuizById(int id, Question question) {
         return quizRepository.createQuestionToQuizById(id, question);
     }
@@ -42,4 +46,5 @@ public class QuizService {
     public boolean deleteQuestionByIdFromQuiz(int quizId, int questionId) {
         return quizRepository.deleteQuestionByIdFromQuiz(quizId, questionId);
     }
+
 }
