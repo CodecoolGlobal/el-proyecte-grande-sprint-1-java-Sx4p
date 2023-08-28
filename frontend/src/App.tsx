@@ -7,7 +7,9 @@ import {Theme} from "@emotion/react";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import QuizList from "./pages/QuizList";
-import QuizForm from "./components/QuizForm";
+import QuizCreator from "./pages/QuizCreator";
+import QuizUpdater from "./pages/QuizUpdater";
+
 
 const router = createBrowserRouter([
     {
@@ -20,7 +22,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/create/quiz",
-                element: <QuizForm/>
+                element: <QuizCreator/>
+            },
+            {
+                path: "/edit/quiz/:id",
+                element: <QuizUpdater/>
             }
         ]
     },
