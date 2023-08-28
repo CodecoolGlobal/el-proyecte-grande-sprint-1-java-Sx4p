@@ -1,7 +1,8 @@
 import React from 'react';
 import QuizForm, {Quiz} from "../components/QuizForm";
+import {NavigateFunction} from "react-router-dom";
 
-const addQuizToDB = (quizData: Quiz) => {
+const addQuizToDB = (quizData: Quiz, navigate: NavigateFunction) => {
     return fetch(`/api/quiz/`, {
         method: "POST",
         headers: {
@@ -9,7 +10,7 @@ const addQuizToDB = (quizData: Quiz) => {
         },
         body: JSON.stringify(quizData),
     })
-        //.then((res: Response) => res.json());
+        .then(() => navigate("/list"));
 };
 const QuizCreator = () => {
     return (

@@ -3,7 +3,8 @@ import Button from "@mui/material/Button";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
+import ErrorAlert from "./ErrorAlert";
 
 interface Props {
     handleSaveQuestion: Function
@@ -14,6 +15,7 @@ export const AddQuestionPopup = ({handleSaveQuestion}: Props) => {
     const [questionName, setQuestion] = useState("");
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [answers, setAnswers] = useState(["", "", ""]);
+    const [isInvalidQuestion, setIsInvalidQuestion] = useState(false);
 
     const handleWrongAnswers = (event: ChangeEvent<HTMLTextAreaElement>, index: number): void => {
         const newValue: string = event.currentTarget.value;
@@ -25,11 +27,37 @@ export const AddQuestionPopup = ({handleSaveQuestion}: Props) => {
         })
     }
 
+    useEffect(() => {
+        const checkAnswers: string[] = answers.filter((answer: string): boolean => answer !== "");
+        if (questionName !== "" || correctAnswer !== "" || checkAnswers.length > 0) {
+            setIsInvalidQuestion(false)
+        }
+    }, [questionName, correctAnswer, answers]);
+
+
+    const checkValidQuestionAndAnswers = (): void => {
+        const checkAnswers: string[] = answers.filter((answer: string): boolean => answer === "");
+        if (questionName === "" || correctAnswer === "" || checkAnswers.length > 0) {
+            setIsInvalidQuestion(true);
+        } else {
+            handleClose();
+            handleSaveQuestion(questionName, correctAnswer, answers);
+            setQuestion("");
+            setCorrectAnswer("");
+            setAnswers(["", "", ""]);
+            setIsInvalidQuestion(false);
+        }
+    }
+
     const handleClickOpen = (): void => {
         setOpen(true);
     };
 
     const handleClose = (): void => {
+        setQuestion("");
+        setCorrectAnswer("");
+        setAnswers(["", "", ""]);
+        setIsInvalidQuestion(false);
         setOpen(false);
     };
 
@@ -60,12 +88,9 @@ export const AddQuestionPopup = ({handleSaveQuestion}: Props) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => {
-                        handleClose();
-                        handleSaveQuestion(questionName, correctAnswer, answers)
-                        setAnswers(["", "", ""])
-                    }}>Add question</Button>
+                    <Button onClick={checkValidQuestionAndAnswers}>Add question</Button>
                 </DialogActions>
+                {isInvalidQuestion && <ErrorAlert message={"Please fill out every field!"}/>}
             </Dialog>
         </Box>
     );

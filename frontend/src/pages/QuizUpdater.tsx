@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {NavigateFunction, useParams} from "react-router-dom";
 import QuizForm, {Quiz} from "../components/QuizForm";
 
 const getQuizById = (id: string) => {
     return fetch(`/api/quiz/${id}`).then((res: Response) => res.json());
 }
 
-const updateQuizInDB = (quiz: Quiz) => {
+const updateQuizInDB = (quiz: Quiz, navigate: NavigateFunction) => {
     return fetch(`/api/quiz/${quiz.id}`, {
         method: "PUT",
         headers: {
@@ -14,7 +14,7 @@ const updateQuizInDB = (quiz: Quiz) => {
         },
         body: JSON.stringify(quiz),
     })
-    //.then((res: Response) => res.json());
+    .then(() => navigate("/list"));
 };
 
 const QuizUpdater = () => {
