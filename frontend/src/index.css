@@ -16,3 +16,9 @@ a {
   color: inherit !important;
   text-decoration: none;
 }
+
+.errorAlert {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
