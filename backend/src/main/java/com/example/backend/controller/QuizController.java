@@ -1,10 +1,13 @@
 package com.example.backend.controller;
 
-import com.example.backend.DTO.QuizDetail;
+import com.example.backend.DTO.QuizDetailDTO;
+import com.example.backend.DTO.QuizUpdateNameAndDifficultyDTO;
 import com.example.backend.model.Question;
 import com.example.backend.model.Quiz;
 import com.example.backend.service.QuizService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -21,8 +24,13 @@ public class QuizController {
     }
 
     @GetMapping("/{id}")
-    public Quiz getQuizById(@PathVariable int id) {
-        return quizService.getQuizById(id);
+    public ResponseEntity<Quiz> getQuizById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(quizService.getQuizById(id));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(404).build();
+        }
     }
 
     @PostMapping("/")
@@ -31,28 +39,48 @@ public class QuizController {
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteQuizById(@PathVariable int id) {
-        return quizService.deleteQuizById(id);
+    public ResponseEntity<Boolean> deleteQuizById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(quizService.deleteQuizById(id));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(404).build();
+        }
     }
 
     @GetMapping("/all/details")
-    public Set<QuizDetail> getDetailsOfQuizzes () {
+    public Set<QuizDetailDTO> getDetailsOfQuizzes() {
         return quizService.getQuizzesDetails();
     }
 
-    @GetMapping("/all/details/my/{id}")
-    public Set<QuizDetail> getQuizzesDetailsOfUserById(@PathVariable int id) {
+    @GetMapping("/all/details/my/{id}") //TODO
+    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById(@PathVariable Long id) {
         return quizService.getQuizzesDetailsOfUserById(id);
     }
 
-    @PostMapping("/{id}/question")
-    public Question addQuestionToQuizById(@PathVariable int id, @RequestBody Question question) {
-        return quizService.createQuestionToQuizById(id, question);
+    @PutMapping("/{id}")
+    public Quiz updateQuizById(@PathVariable Long id, @RequestBody QuizUpdateNameAndDifficultyDTO quizUpdate) {
+        return quizService.updateQuizById(id, quizUpdate);
     }
 
-    @DeleteMapping("/{qid}/question/{id}")
-    public boolean deleteQuestionByIdFromQuizById(@PathVariable("qid") int quizId, @PathVariable("id") int questionId) {
-        return quizService.deleteQuestionByIdFromQuiz(quizId, questionId);
+    @PostMapping("/{id}/question")
+    public ResponseEntity<Question> addQuestionToQuizById(@PathVariable Long id, @RequestBody Question question) {
+        try {
+            return ResponseEntity.ok(quizService.createQuestionToQuizById(id, question));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @DeleteMapping("/question/{id}")
+    public ResponseEntity<Boolean> deleteQuestionByIdFromQuizById(@PathVariable("id") Long questionId) {
+        try {
+            return ResponseEntity.ok(quizService.deleteQuestionByIdFromQuiz(questionId));
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }
