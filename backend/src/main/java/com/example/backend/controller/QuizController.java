@@ -1,11 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.DTO.QuizDetailDTO;
-import com.example.backend.DTO.QuizUpdateNameAndDifficultyDTO;
-import com.example.backend.model.Question;
 import com.example.backend.model.Quiz;
 import com.example.backend.service.QuizService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,28 +56,7 @@ public class QuizController {
     }
 
     @PutMapping("/{id}")
-    public Quiz updateQuizById(@PathVariable Long id, @RequestBody QuizUpdateNameAndDifficultyDTO quizUpdate) {
-        return quizService.updateQuizById(id, quizUpdate);
+    public Quiz updateQuizById(@PathVariable Long id, @RequestBody Quiz quiz) {
+        return quizService.updateQuizById(id, quiz);
     }
-
-    @PostMapping("/{id}/question")
-    public ResponseEntity<Question> addQuestionToQuizById(@PathVariable Long id, @RequestBody Question question) {
-        try {
-            return ResponseEntity.ok(quizService.createQuestionToQuizById(id, question));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(404).build();
-        }
-    }
-
-    @DeleteMapping("/question/{id}")
-    public ResponseEntity<Boolean> deleteQuestionByIdFromQuizById(@PathVariable("id") Long questionId) {
-        try {
-            return ResponseEntity.ok(quizService.deleteQuestionByIdFromQuiz(questionId));
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(404).build();
-        }
-    }
-
 }
