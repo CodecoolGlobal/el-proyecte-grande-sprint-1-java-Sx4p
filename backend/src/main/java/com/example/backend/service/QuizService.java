@@ -1,7 +1,6 @@
 package com.example.backend.service;
 
 import com.example.backend.DTO.QuizDetailDTO;
-import com.example.backend.DTO.QuizUpdateNameAndDifficultyDTO;
 import com.example.backend.model.Question;
 import com.example.backend.model.Quiz;
 import com.example.backend.repository.QuestionRepository;
@@ -58,26 +57,22 @@ public class QuizService {
     }
 
     @Transactional
-    public Quiz updateQuizById(Long id, QuizUpdateNameAndDifficultyDTO quizUpdate) {
-        Quiz quizToEdit = quizRepository.getReferenceById(id);
-        quizToEdit.setName(quizUpdate.name());
-        quizToEdit.setDifficulty(quizUpdate.difficulty());
+    public Quiz updateQuizById(Long id, Quiz quiz) {
+        Quiz quizToEdit = quizRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        quizToEdit.setName(quiz.getName());
+        quizToEdit.setDifficulty(quiz.getDifficulty());
+        handleQuestions(quizToEdit.getQuestions(), quiz.getQuestions());
+        quizToEdit.setQuestions(quiz.getQuestions());
         quizRepository.save(quizToEdit);
         return quizToEdit;
     }
 
-    @Transactional
-    public Question createQuestionToQuizById(Long id, Question question) {
-        Quiz quiz = quizRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        question.setQuiz(quiz);
-        questionRepository.save(question);
-        return question;
-    }
-
-    @Transactional
-    public boolean deleteQuestionByIdFromQuiz(Long questionId) {
-        Question question = questionRepository.findById(questionId).orElseThrow(EntityNotFoundException::new);
-        questionRepository.delete(question);
-        return true;
+    private void handleQuestions(Set<Question> existingQuestions, Set<Question> newQuestions) {
+        Set<Question> questionsToSave = newQuestions.stream()
+                .filter(question -> !existingQuestions.contains(question)).collect(Collectors.toSet());
+        Set<Question> questionsToDelete = existingQuestions.stream()
+                .filter(question -> !newQuestions.contains(question)).collect(Collectors.toSet());
+        questionRepository.saveAll(questionsToSave);
+        questionRepository.deleteAll(questionsToDelete);
     }
 }
