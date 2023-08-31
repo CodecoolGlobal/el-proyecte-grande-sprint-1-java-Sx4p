@@ -45,6 +45,7 @@ public class QuizService {
         Set<QuizDetail> quizDetails = quizRepository.getQuizDetails();
         return quizDetails.stream()
                 .map(quizDetail -> new QuizDetailDTO(
+                        quizDetail.getId(),
                         quizDetail.getName(),
                         quizDetail.getNumberOfQuestions(),
                         quizDetail.getDifficulty()))
