@@ -3,7 +3,12 @@ import {NavigateFunction, useParams} from "react-router-dom";
 import QuizForm, {Quiz} from "../components/QuizForm";
 
 const getQuizById = (id: string) => {
-    return fetch(`/api/quiz/${id}`).then((res: Response) => res.json());
+    return fetch(`/api/quiz/${id}`)
+        .then((res: Response) => {
+            if (res.ok) {
+               return res.json();
+            }
+        });
 }
 
 const updateQuizInDB = (quiz: Quiz, navigate: NavigateFunction) => {
@@ -35,7 +40,7 @@ const QuizUpdater = () => {
             return <div>No ID specified!</div>
         }
         if (quiz === undefined) {
-            return <div>Loading...</div>
+            return <div>Not existing quiz!</div>
         }
         return <QuizForm quiz={quiz} onSave={updateQuizInDB}/>
     }
