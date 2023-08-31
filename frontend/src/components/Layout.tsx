@@ -27,7 +27,8 @@ const pages: Page[] = [
 function Layout(): ReactElement {
     return (
         <>
-            <AppBar variant="elevation" position={"sticky"} sx={{marginBottom: 5}}>
+            <AppBar variant="elevation" position={"sticky"}
+                    sx={{marginBottom: 5, backgroundColor: "background.default"}}>
                 <Toolbar>
                     <Box component={"img"} src={QuizBuzzLogo} alt={"QuizBuzz logo"} height={70}/>
                     {pages.map((page: Page, i) => (
@@ -46,7 +47,8 @@ function Layout(): ReactElement {
                             </MenuItem>
                         </Link>
                     ))}
-                    <Button sx={{marginLeft: "auto"}} href="/login">
+                    <Button sx={{marginLeft: "auto", backgroundColor: "secondary.main", borderRadius: "50px"}}
+                            href="/login">
                         <LoginIcon sx={{color: "white"}}/>
                     </Button>
                 </Toolbar>
