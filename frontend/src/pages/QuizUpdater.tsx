@@ -7,6 +7,7 @@ const getQuizById = (id: string) => {
 }
 
 const updateQuizInDB = (quiz: Quiz, navigate: NavigateFunction) => {
+
     return fetch(`/api/quiz/${quiz.id}`, {
         method: "PUT",
         headers: {
@@ -14,7 +15,9 @@ const updateQuizInDB = (quiz: Quiz, navigate: NavigateFunction) => {
         },
         body: JSON.stringify(quiz),
     })
-    .then(() => navigate("/list"));
+        .then(() => {
+            navigate("/list");
+        });
 };
 
 const QuizUpdater = () => {
