@@ -2,13 +2,14 @@ import React, {ReactElement} from "react";
 import Button from "@mui/material/Button";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Box from "@mui/material/Box";
 
-interface Props{
+interface Props {
     handleDeleteQuiz: Function,
     quizName: string
 }
 
-function DeleteQuizButton({handleDeleteQuiz, quizName}: Props): ReactElement{
+function DeleteQuizButton({handleDeleteQuiz, quizName}: Props): ReactElement {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -20,8 +21,9 @@ function DeleteQuizButton({handleDeleteQuiz, quizName}: Props): ReactElement{
     };
 
     return (
-        <div>
-            <Button onClick={handleClickOpen}><DeleteForeverIcon/></Button>
+        <Box sx={{marginLeft: "10px"}}>
+            <Button onClick={handleClickOpen} variant={"contained"} color={"error"}
+                    sx={{borderRadius: "30px"}}><DeleteForeverIcon/></Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -38,12 +40,15 @@ function DeleteQuizButton({handleDeleteQuiz, quizName}: Props): ReactElement{
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => {handleClose(); handleDeleteQuiz()}} autoFocus>
+                    <Button onClick={() => {
+                        handleClose();
+                        handleDeleteQuiz()
+                    }} autoFocus>
                         Confirm delete
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Box>
     );
 }
 

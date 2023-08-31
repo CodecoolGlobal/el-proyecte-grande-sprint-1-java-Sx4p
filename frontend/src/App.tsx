@@ -44,19 +44,19 @@ const theme: Theme = createTheme(
     {
         palette: {
             primary: {
-                main: '#2196f3',
-                light: '#3ec8fe',
-                dark: '#1d6fb1',
+                main: '#6457f7',
+                light: '#ffffff',
+                dark: '#fa6705',
             },
             secondary: {
-                main: '#d50000',
+                main: '#fa6705'
             },
             background: {
-                default: '#e1f5fe',
-                paper: 'rgba(255,255,255,0.9)',
+                default: '#000000',
+                paper: '#ffffff',
             },
             text: {
-                primary: '#000000',
+                primary: '#ffffff',
             },
         },
         typography: {
