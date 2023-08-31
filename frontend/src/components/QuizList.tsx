@@ -48,7 +48,7 @@ function QuizList({fetchUrl, siteTitle, editable}: Props): ReactElement {
                 <Typography variant={"h4"} mb={4}>
                     {siteTitle}
                 </Typography>
-                <Stack>
+                <Stack bgcolor={"primary.light"} padding={"30px"} borderRadius={"40px"}>
                     {quizzes.map((quiz: QuizDetails, i: number) => (
                         <QuizListElement key={i}
                                          id={quiz.id}
