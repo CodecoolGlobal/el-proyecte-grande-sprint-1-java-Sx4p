@@ -28,7 +28,7 @@ function Layout(): ReactElement {
     return (
         <>
             <AppBar variant="elevation" position={"sticky"}
-                    sx={{marginBottom: 5, backgroundColor: "background.default"}}>
+                    sx={{marginBottom: 5, backgroundColor: "#242426"}}>
                 <Toolbar>
                     <Box component={"img"} src={QuizBuzzLogo} alt={"QuizBuzz logo"} height={70}/>
                     {pages.map((page: Page, i) => (

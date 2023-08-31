@@ -30,7 +30,7 @@ function DeleteQuizButton({handleDeleteQuiz, quizName}: Props): ReactElement {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
+                <DialogTitle id="alert-dialog-title" color={"black"}>
                     {"Are you sure you want to delete " + quizName + "?"}
                 </DialogTitle>
                 <DialogContent>
