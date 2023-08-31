@@ -20,7 +20,7 @@ interface Page {
 
 const pages: Page[] = [
     {"name": 'Quiz List', "icon": FormatListBulletedIcon, path: "/list"},
-    {"name": 'My Quizzes', "icon": QuizIcon, path: "/my/quizzes"},
+    {"name": 'My Quizzes', "icon": QuizIcon, path: "/myquizzes"},
     {"name": 'Create Quiz', "icon": CreateIcon, path: "/create/quiz"}
 ];
 

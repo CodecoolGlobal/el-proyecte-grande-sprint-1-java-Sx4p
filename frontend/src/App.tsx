@@ -6,10 +6,9 @@ import Login from "./pages/Login";
 import {Theme} from "@emotion/react";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import QuizList from "./pages/QuizList";
+import QuizList from "./components/QuizList";
 import QuizCreator from "./pages/QuizCreator";
 import QuizUpdater from "./pages/QuizUpdater";
-
 
 const router = createBrowserRouter([
     {
@@ -18,7 +17,12 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/list",
-                element: <QuizList/>
+                element: <QuizList editable={false} siteTitle={"Available quizzes"} fetchUrl={"/api/quiz/all/details"}/>
+            },
+            {
+                path: "/myquizzes",
+                element: <QuizList editable={true} siteTitle={"Quizzes made by USERNAME"}
+                                   fetchUrl={"/api/quiz/all/details"}/>
             },
             {
                 path: "/create/quiz",
