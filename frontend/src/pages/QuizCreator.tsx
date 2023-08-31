@@ -12,10 +12,11 @@ const addQuizToDB = (quizData: Quiz, navigate: NavigateFunction) => {
     })
         .then(() => navigate("/list"));
 };
+
 const QuizCreator = () => {
     return (
         <div>
-            <QuizForm quiz={{id: 0, userId: 0, name: "", questions: [], creationDate: new Date(), difficulty: ""}}
+            <QuizForm quiz={{id: -1, userId: 0, name: "", questions: [], creationDate: new Date(), difficulty: ""}}
                       onSave={addQuizToDB}/>
         </div>
     );

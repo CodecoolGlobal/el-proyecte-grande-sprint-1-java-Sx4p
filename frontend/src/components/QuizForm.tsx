@@ -54,23 +54,23 @@ export default function QuizForm({quiz, onSave}: Props): ReactElement {
         if (title === "" || difficulty === "") {
             setIsInvalidQuiz(true);
         } else {
-            const quiz: Quiz = {
-                id: 3, userId: 1, name: title, questions: questions,
+            const quizToSave: Quiz = {
+                id: quiz.id, userId: 1, name: title, questions: questions,
                 creationDate: new Date(), difficulty: difficulty
             };
-            onSave(quiz, navigate);
+            onSave(quizToSave, navigate);
         }
     }
 
     const handleSaveQuestion = (question: string, correctAnswer: string, wrongAnswers: string[]): void => {
         const answers: Answer[] = [...wrongAnswers, correctAnswer]
-            .map(answer => ({id: 0, answer: answer, rightAnswer: answer === correctAnswer}));
-        const questionForSave: Question = {id: Math.floor(Math.random() * 500), question: question, answers: answers}
+            .map(answer => ({answer: answer, rightAnswer: answer === correctAnswer}));
+        const questionForSave: Question = {question: question, answers: answers}
         setQuestions([...questions, questionForSave]);
     }
 
-    const handleDeleteQuestion = (questionId: number): void => {
-        const newQuestions: Question[] = questions.filter((question: Question): boolean => question.id !== questionId);
+    const handleDeleteQuestion = (questionName: string): void => {
+        const newQuestions: Question[] = questions.filter((question: Question): boolean => question.question !== questionName);
         setQuestions(newQuestions);
     }
 
