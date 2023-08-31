@@ -9,7 +9,7 @@ interface Props {
 export default function ErrorAlert({message}: Props): ReactElement {
     return (
         <Stack sx={{width: "100%"}} spacing={2}>
-            <Alert variant="filled" severity="error" className="errorAlert">
+            <Alert variant="filled" severity="error" className="errorAlert" sx={{borderRadius: "20px"}}>
                 {message}
             </Alert>
         </Stack>

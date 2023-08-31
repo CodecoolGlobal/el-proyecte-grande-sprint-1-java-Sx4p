@@ -76,30 +76,34 @@ export default function QuizForm({quiz, onSave}: Props): ReactElement {
 
     return (
         <form action="/">
-            <FormControl sx={{width: "90%", margin: "5%"}}>
+            <FormControl sx={{width: "90%", marginLeft: "5%"}}>
                 <FormLabel sx={{
                     fontSize: "40px",
                     color: "text.primary",
                     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25), -2px -2px 4px rgba(0, 0, 0, 0.25)",
-                    margin: "auto"
-                }}>{quiz.name ? "Edit Quiz" : "Create Quiz"}</FormLabel>
-                <FormGroup sx={{
-                    padding: 3,
-                    marginTop: "10px",
-                    borderRadius: 2,
-                    border: "3px solid",
-                    borderColor: "primary.dark",
-                    backgroundColor: "background.default"
+                    margin: "auto",
                 }}>
-                    <TextField label="Title" sx={{marginBottom: 2, backgroundColor: "background.paper"}}
+                    {quiz.name ? "Edit Quiz" : "Create Quiz"}
+                </FormLabel>
+                <FormGroup sx={{
+                    padding: 8,
+                    marginTop: "10px",
+                    borderRadius: "50px",
+                    backgroundColor: "primary.light",
+                    color: "black"
+                }}>
+                    <TextField label="Title" sx={{marginBottom: 5, input: {color: "black"}}}
                                name="title" variant="outlined" placeholder="Title of the quiz"
                                defaultValue={quiz.name}
-                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}/>
+                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+                    />
                     <Typography component="legend" sx={{
                         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
                         fontSize: "20px",
-                        color: "text.primary"
-                    }}>Difficulty:</Typography>
+                        color: "black"
+                    }}>
+                        Difficulty:
+                    </Typography>
                     <RadioGroup row defaultValue={quiz.difficulty}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDifficulty(e.target.value)}>
                         <FormControlLabel name="diff" value="EASY" control={<Radio/>} label="Easy"></FormControlLabel>
@@ -107,23 +111,39 @@ export default function QuizForm({quiz, onSave}: Props): ReactElement {
                                           label="Medium"></FormControlLabel>
                         <FormControlLabel name="diff" value="HARD" control={<Radio/>} label="Hard"></FormControlLabel>
                     </RadioGroup>
-                    {questions.length > 0 && <><Typography component="legend" sx={{
-                        marginTop: "5px",
-                        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
-                        fontSize: "20px",
-                        color: "text.primary"
-                    }}>Added Questions:</Typography>
-                        <Stack sx={{
-                            minHeight: "20vh", maxHeight: "40vh", overflow: "auto", borderRadius: 2,
-                            border: "2px solid", borderColor: "primary.main", padding: "10px", margin: "5px"
-                        }}>
-                            {questions.map((question: Question, index: number) => (
-                                <QuestionListElement handleDeleteQuestion={handleDeleteQuestion} question={question}
-                                                     key={index}/>))}
-                        </Stack></>}
-                    <AddQuestionPopup handleSaveQuestion={handleSaveQuestion}/>
+                    <>
+                        <Stack direction={{xs: 'column', md: 'row'}}
+                               spacing={{sx: 2, md: "79%"}}
+                               sx={{display: 'flex', alignItems: 'center', flexGrow: 1, margin: "5px"}}>
+                            <Typography component="legend" sx={{
+                                marginTop: 4,
+                                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
+                                fontSize: "20px",
+                                color: "black"
+                            }}>
+                                {questions.length > 0 ? "Added Questions:" : "Add Question:"}
+                            </Typography>
+                            <AddQuestionPopup handleSaveQuestion={handleSaveQuestion}/>
+                        </Stack>
+                        {questions.length > 0 &&
+                            <Stack sx={{
+                                minHeight: "20vh", maxHeight: "40vh", overflow: "auto", borderRadius: "50px",
+                                border: "2px solid", borderColor: "primary.main", padding: "10px",
+                                '&::-webkit-scrollbar': {display: "none"}
+                            }}>
+                                {questions.map((question: Question, index: number) => (
+                                    <QuestionListElement handleDeleteQuestion={handleDeleteQuestion} question={question}
+                                                         key={index}/>))}
+                            </Stack>}
+                    </>
                     <Button variant="outlined" onClick={submitQuiz}
-                            sx={{backgroundColor: "background.paper"}}>Submit</Button>
+                            sx={{
+                                borderRadius: "50px", marginTop: "30px", width: "15%", marginLeft: "auto",
+                                backgroundColor: "secondary.main", color: "text.primary",
+                                '&:hover': {backgroundColor: "primary.light", color: "primary.main"}
+                            }}>
+                        Submit
+                    </Button>
                 </FormGroup>
             </FormControl>
             {isInvalidQuiz && <ErrorAlert message={"Please fill out every field!"}/>}
