@@ -1,11 +1,11 @@
-package com.example.backend.service;
+package com.quizbuzz.backend.service;
 
-import com.example.backend.DTO.QuizDetailDTO;
-import com.example.backend.model.Question;
-import com.example.backend.model.Quiz;
-import com.example.backend.repository.QuestionRepository;
-import com.example.backend.repository.QuizDetail;
-import com.example.backend.repository.QuizRepository;
+import com.quizbuzz.backend.DTO.QuizDetailDTO;
+import com.quizbuzz.backend.model.Question;
+import com.quizbuzz.backend.model.Quiz;
+import com.quizbuzz.backend.repository.QuestionRepository;
+import com.quizbuzz.backend.repository.QuizDetail;
+import com.quizbuzz.backend.repository.QuizRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
