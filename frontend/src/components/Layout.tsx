@@ -28,9 +28,9 @@ function Layout(): ReactElement {
     return (
         <>
             <AppBar variant="elevation" position={"sticky"}
-                    sx={{marginBottom: 5, backgroundColor: "#242426"}}>
+                    sx={{marginBottom: "2vh", backgroundColor: "#242426"}}>
                 <Toolbar>
-                    <Box component={"img"} src={QuizBuzzLogo} alt={"QuizBuzz logo"} height={70}/>
+                    <Link to={"/"}><Box component={"img"} src={QuizBuzzLogo} alt={"QuizBuzz logo"} height={70}/></Link>
                     {pages.map((page: Page, i) => (
                         <Link to={page.path} key={i}>
                             <MenuItem>

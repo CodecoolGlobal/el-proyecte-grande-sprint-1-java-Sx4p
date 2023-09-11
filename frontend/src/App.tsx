@@ -9,12 +9,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import QuizList from "./components/QuizList";
 import QuizCreator from "./pages/QuizCreator";
 import QuizUpdater from "./pages/QuizUpdater";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout/>,
         children: [
+            {
+                path: "/",
+                element: <Home/>
+            },
             {
                 path: "/list",
                 element: <QuizList editable={false} siteTitle={"Available quizzes"} fetchUrl={"/api/quiz/all/details"}/>
