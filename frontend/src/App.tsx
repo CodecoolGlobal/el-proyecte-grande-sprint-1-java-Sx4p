@@ -11,6 +11,7 @@ import QuizCreator from "./pages/QuizCreator";
 import QuizUpdater from "./pages/QuizUpdater";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
             {
                 path: "/play",
                 element: <Game/>
+            },
+            {
+                path: "/quiz404",
+                element: <NotFound variant={"QUIZ"}/>
+            },
+            {
+                path: "*",
+                element: <NotFound/>
             }
         ]
     },
