@@ -1,7 +1,7 @@
 import {ReactElement} from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import {Card, CardActions, CardContent} from "@mui/material";
+import {Card, CardActions, CardContent, Tooltip} from "@mui/material";
 import Button from "@mui/material/Button";
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import {QuizDetails} from "./QuizList";
@@ -9,12 +9,12 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteQuizButton from "./DeleteQuizButton";
 import {useNavigate} from "react-router-dom";
+import Box from "@mui/material/Box";
 
 export default function QuizListElement({id, name, author, numberOfQuestions, difficulty, editable}: QuizDetails): ReactElement {
     const navigate = useNavigate();
 
     const handleDeleteQuiz = async () => {
-        console.log(id);
         const res = await fetch("/api/quiz/" + id, {
             method: "DELETE"
         });
@@ -32,7 +32,7 @@ export default function QuizListElement({id, name, author, numberOfQuestions, di
                       sx={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "space-between",
+                          justifyContent: "flex-start",
                           flexDirection: {xs: "column", md: "row"},
                           borderRadius: "30px",
                           backgroundColor: "#938aff",
@@ -62,14 +62,22 @@ export default function QuizListElement({id, name, author, numberOfQuestions, di
                             Author: {author}
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                        <Button size={"medium"} variant={"contained"}
-                                sx={{borderRadius: "30px"}}><PlayArrowIcon/></Button>
+                    <CardActions sx={{width: "20%"}}>
+                        <Tooltip title={numberOfQuestions == 0 ? "This quiz is not playable yet, because it has no questions." : null} arrow={true}>
+                            <Box sx={{width: "100%", marginRight: "8px"}}>
+                                <Button size={"medium"} variant={"contained"}
+                                        sx={{borderRadius: "30px", width: "100%"}}
+                                        onClick={() => navigate("/play/?quiz=" + id)}
+                                        disabled={numberOfQuestions == 0}>
+                                    <PlayArrowIcon/>
+                                </Button>
+                            </Box>
+                        </Tooltip>
                         {editable && <Button size={"medium"} variant={"contained"}
                                              onClick={() => navigate("/edit/quiz/" + id)} sx={{borderRadius: "30px"}}>
                             <EditIcon/>
                         </Button>}
-                        <DeleteQuizButton handleDeleteQuiz={handleDeleteQuiz} quizName={name}/>
+                        {editable && <DeleteQuizButton handleDeleteQuiz={handleDeleteQuiz} quizName={name}/>}
                     </CardActions>
                 </Card>
             </Grid>
