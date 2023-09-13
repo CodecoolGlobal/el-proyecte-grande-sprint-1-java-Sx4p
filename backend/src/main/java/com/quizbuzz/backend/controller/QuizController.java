@@ -50,9 +50,9 @@ public class QuizController {
         return quizService.getQuizzesDetails();
     }
 
-    @GetMapping("/all/details/my/{id}") //TODO
-    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById(@PathVariable Long id) {
-        return quizService.getQuizzesDetailsOfUserById(id);
+    @GetMapping("/all/details/my/")
+    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById() {
+        return quizService.getQuizzesDetailsOfUserById();
     }
 
     @PutMapping("/{id}")

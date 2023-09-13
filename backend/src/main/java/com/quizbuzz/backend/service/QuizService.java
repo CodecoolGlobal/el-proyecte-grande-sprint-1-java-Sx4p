@@ -3,14 +3,19 @@ package com.quizbuzz.backend.service;
 import com.quizbuzz.backend.DTO.QuizDetailDTO;
 import com.quizbuzz.backend.model.Question;
 import com.quizbuzz.backend.model.Quiz;
+import com.quizbuzz.backend.model.user.AppUser;
 import com.quizbuzz.backend.repository.QuestionRepository;
 import com.quizbuzz.backend.repository.QuizDetail;
 import com.quizbuzz.backend.repository.QuizRepository;
+import com.quizbuzz.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,10 +25,13 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public QuizService(QuizRepository quizRepository, QuestionRepository questionRepository) {
+    public QuizService(QuizRepository quizRepository, QuestionRepository questionRepository, UserRepository userRepository) {
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
+        this.userRepository = userRepository;
     }
 
     public Quiz getQuizById(Long id) {
@@ -52,20 +60,40 @@ public class QuizService {
                 .collect(Collectors.toSet());
     }
 
-    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById(Long id) {
-        //TODO
-        return null;
+    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById() {
+        Long actualUserId = getLoggedInUserId();
+        Set<QuizDetail> quizDetailsByUser = quizRepository.getQuizDetailsByUserId(actualUserId);
+        return quizDetailsByUser.stream()
+                .map(quizDetail -> new QuizDetailDTO(
+                        quizDetail.getId(),
+                        quizDetail.getName(),
+                        quizDetail.getNumberOfQuestions(),
+                        quizDetail.getDifficulty()))
+                .collect(Collectors.toSet());
+    }
+
+    private Long getLoggedInUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        Optional<AppUser> actualUser = userRepository.findByUserName(userName);
+        return actualUser.map(AppUser::getId).orElse(null);
     }
 
     @Transactional
     public Quiz updateQuizById(Long id, Quiz quiz) {
         Quiz quizToEdit = quizRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        quizToEdit.setName(quiz.getName());
-        quizToEdit.setDifficulty(quiz.getDifficulty());
-        handleQuestions(quizToEdit.getQuestions(), quiz.getQuestions());
-        quizToEdit.setQuestions(quiz.getQuestions());
-        quizRepository.save(quizToEdit);
-        return quizToEdit;
+        Long actualUserId = getLoggedInUserId();
+        if (quizToEdit.getUserId().equals(actualUserId)) {
+            quizToEdit.setName(quiz.getName());
+            quizToEdit.setDifficulty(quiz.getDifficulty());
+            handleQuestions(quizToEdit.getQuestions(), quiz.getQuestions());
+            quizToEdit.setQuestions(quiz.getQuestions());
+            quizRepository.save(quizToEdit);
+            return quizToEdit;
+        } else {
+            throw new EntityNotFoundException("No permission to edit quiz!");
+        }
+
     }
 
     private void handleQuestions(Set<Question> existingQuestions, Set<Question> newQuestions) {
