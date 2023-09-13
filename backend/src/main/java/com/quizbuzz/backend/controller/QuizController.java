@@ -1,8 +1,8 @@
-package com.example.backend.controller;
+package com.quizbuzz.backend.controller;
 
-import com.example.backend.DTO.QuizDetailDTO;
-import com.example.backend.model.Quiz;
-import com.example.backend.service.QuizService;
+import com.quizbuzz.backend.DTO.QuizDetailDTO;
+import com.quizbuzz.backend.model.Quiz;
+import com.quizbuzz.backend.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +50,9 @@ public class QuizController {
         return quizService.getQuizzesDetails();
     }
 
-    @GetMapping("/all/details/my/{id}") //TODO
-    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById(@PathVariable Long id) {
-        return quizService.getQuizzesDetailsOfUserById(id);
+    @GetMapping("/all/details/my/")
+    public Set<QuizDetailDTO> getQuizzesDetailsOfUserById() {
+        return quizService.getQuizzesDetailsOfUserById();
     }
 
     @PutMapping("/{id}")

@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.quizbuzz.backend.model;
 
 public enum Difficulty {
     EASY,

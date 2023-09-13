@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.quizbuzz.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

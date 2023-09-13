@@ -1,6 +1,6 @@
-package com.example.backend.repository;
+package com.quizbuzz.backend.repository;
 
-import com.example.backend.model.Difficulty;
+import com.quizbuzz.backend.model.Difficulty;
 
 public interface QuizDetail {
     Long getId();
