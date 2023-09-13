@@ -8,17 +8,42 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {ReactElement} from "react";
+import {ReactElement, useState} from "react";
+import {Snackbar} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import {useNavigate} from "react-router-dom";
 
 export default function Login(): ReactElement {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const [loginFailed, setLoginFailed] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        setLoginFailed(false);
+        const loginData = new FormData(event.currentTarget);
+        try {
+            const res = await fetch("/api/user/login", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "username": loginData.get("username"),
+                        "password": loginData.get("password")
+                    })
+                }
+            );
+            if (res.status === 200) {
+                //const data = await res.json();
+                navigate("/");
+            } else {
+                setLoginFailed(true);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -41,10 +66,10 @@ export default function Login(): ReactElement {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
                         autoFocus
                     />
                     <TextField
@@ -74,6 +99,11 @@ export default function Login(): ReactElement {
                     </Grid>
                 </Box>
             </Box>
+            <Snackbar open={loginFailed} autoHideDuration={5000}>
+                <Alert severity={"error"}>
+                    Incorrect username/password!
+                </Alert>
+            </Snackbar>
         </Container>
     );
 }
