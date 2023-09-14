@@ -65,7 +65,7 @@ public class QuizController {
         return quizService.getQuizzesDetails();
     }
 
-    @GetMapping("/all/details/my/")
+    @GetMapping("/all/details/my")
     public Set<QuizDetailDTO> getQuizzesDetailsOfUserById() {
         return quizService.getQuizzesDetailsOfUserById();
     }

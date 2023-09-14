@@ -2,6 +2,7 @@ package com.quizbuzz.backend.service;
 
 import com.quizbuzz.backend.config.JwtService;
 import com.quizbuzz.backend.controller.AuthenticationRequest;
+import com.quizbuzz.backend.controller.AuthenticationResponse;
 import com.quizbuzz.backend.controller.RegisterRequest;
 import com.quizbuzz.backend.model.user.AppUser;
 import com.quizbuzz.backend.model.user.Role;
@@ -26,26 +27,28 @@ public class UserService {
 
     public ResponseEntity<String> userRegistration(RegisterRequest request) {
         if (!userRepository.existsByUserName(request.getUsername())) {
-            if (request.getPassword().length() < MINIMUM_PASSWORD_LENGTH) {
+            if (request.getPassword().length() >= MINIMUM_PASSWORD_LENGTH) {
                 String encryptedPassword = encoder.encode(request.getPassword());
                 AppUser newUser = AppUser.builder().userName(request.getUsername()).password(encryptedPassword).role(Role.USER).build();
                 userRepository.save(newUser);
             } else {
-                return ResponseEntity.status(422).body("Not enough long password!");
+                return ResponseEntity.status(422).body("Password is not long enough!");
             }
         } else {
-            return ResponseEntity.status(409).body("Already registered User!");
+            return ResponseEntity.status(409).body("Username already taken!");
         }
         return ResponseEntity.ok("Successful Registration!");
     }
 
-    public ResponseEntity<String> authenticateUserLogin(AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticateUserLogin(AuthenticationRequest request) {
         var authentication = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
         String token = jwtService.generateToken(authenticate.getAuthorities(), authenticate.getName());
-
-        return ResponseEntity.ok(token);
+        AuthenticationResponse authResponse = new AuthenticationResponse();
+        authResponse.setToken(token);
+        authResponse.setUsername(request.getUsername());
+        return ResponseEntity.ok(authResponse);
     }
 }
