@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {ReactElement, useState} from "react";
+import {ReactElement, useEffect, useState} from "react";
 import {Snackbar} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import {useNavigate} from "react-router-dom";
@@ -34,8 +34,9 @@ export default function Login(): ReactElement {
                 }
             );
             if (res.status === 200) {
-                //const data = await res.json();
-                navigate("/");
+                const token = await res.text();
+                localStorage.setItem("token", token);
+                navigate("/list")
             } else {
                 setLoginFailed(true);
             }
@@ -44,6 +45,11 @@ export default function Login(): ReactElement {
         }
     };
 
+    useEffect(() => {
+        if(localStorage.getItem("token") !== null){
+            navigate("/list");
+        }
+    }, []);
 
     return (
         <Container component="main" maxWidth="xs">
