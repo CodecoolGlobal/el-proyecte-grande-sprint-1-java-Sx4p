@@ -33,8 +33,9 @@ export default function Login(): ReactElement {
                 }
             );
             if (res.status === 200) {
-                const token = await res.text();
-                localStorage.setItem("token", token);
+                const response = await res.json();
+                localStorage.setItem("token", response["token"]);
+                localStorage.setItem("username", response["username"]);
                 navigate("/list")
             } else {
                 setLoginFailed(true);

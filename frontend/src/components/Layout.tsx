@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import MenuItem from '@mui/material/MenuItem';
 import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import QuizIcon from '@mui/icons-material/Quiz';
 import CreateIcon from '@mui/icons-material/Create';
@@ -47,9 +48,22 @@ function Layout(): ReactElement {
                             </MenuItem>
                         </Link>
                     ))}
-                    <Button sx={{marginLeft: "auto", backgroundColor: "secondary.main", borderRadius: "50px"}}
+
+                    {localStorage.getItem("username") !== null ?
+                        <Typography sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            marginLeft: 'auto',
+                            fontWeight: '600'
+
+                        }}>
+                            {localStorage.getItem("username")}
+                        </Typography> : null}
+                    <Button sx={{marginLeft: '20px', backgroundColor: "secondary.main", borderRadius: "50px"}}
                             href="/login">
-                        <LoginIcon sx={{color: "white"}}/>
+                        {localStorage.getItem("username") === null ?
+                            <LoginIcon sx={{color: "white"}}/> : <LogoutIcon sx={{color: "white"}}/>}
                     </Button>
                 </Toolbar>
             </AppBar>
