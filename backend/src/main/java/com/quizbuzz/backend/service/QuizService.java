@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.NoPermissionException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,7 +25,6 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
-
     private final UserRepository userRepository;
 
     @Autowired
@@ -39,14 +39,37 @@ public class QuizService {
     }
 
     public Quiz createQuiz(Quiz quiz) {
+        Long actualUserId = getLoggedInUserId();
+        quiz.setUserId(actualUserId);
         return quizRepository.save(quiz);
     }
 
     @Transactional
-    public boolean deleteQuizById(Long id) {
+    public Quiz updateQuizById(Long id, Quiz quiz) throws NoPermissionException {
+        Quiz quizToEdit = quizRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Long actualUserId = getLoggedInUserId();
+        if (quizToEdit.getUserId().equals(actualUserId)) {
+            quizToEdit.setName(quiz.getName());
+            quizToEdit.setDifficulty(quiz.getDifficulty());
+            handleQuestions(quizToEdit.getQuestions(), quiz.getQuestions());
+            quizToEdit.setQuestions(quiz.getQuestions());
+            quizRepository.save(quizToEdit);
+            return quizToEdit;
+        } else {
+            throw new NoPermissionException("No permission to edit quiz!");
+        }
+    }
+
+    @Transactional
+    public boolean deleteQuizById(Long id) throws NoPermissionException {
+        Long actualUserId = getLoggedInUserId();
         Quiz quizToDelete = quizRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        quizRepository.delete(quizToDelete);
-        return true;
+        if (quizToDelete.getUserId().equals(actualUserId)) {
+            quizRepository.delete(quizToDelete);
+            return true;
+        } else {
+            throw new NoPermissionException("No permission to delete quiz!");
+        }
     }
 
     public Set<QuizDetailDTO> getQuizzesDetails() {
@@ -77,23 +100,6 @@ public class QuizService {
         String userName = authentication.getName();
         Optional<AppUser> actualUser = userRepository.findByUserName(userName);
         return actualUser.map(AppUser::getId).orElse(null);
-    }
-
-    @Transactional
-    public Quiz updateQuizById(Long id, Quiz quiz) {
-        Quiz quizToEdit = quizRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        Long actualUserId = getLoggedInUserId();
-        if (quizToEdit.getUserId().equals(actualUserId)) {
-            quizToEdit.setName(quiz.getName());
-            quizToEdit.setDifficulty(quiz.getDifficulty());
-            handleQuestions(quizToEdit.getQuestions(), quiz.getQuestions());
-            quizToEdit.setQuestions(quiz.getQuestions());
-            quizRepository.save(quizToEdit);
-            return quizToEdit;
-        } else {
-            throw new EntityNotFoundException("No permission to edit quiz!");
-        }
-
     }
 
     private void handleQuestions(Set<Question> existingQuestions, Set<Question> newQuestions) {

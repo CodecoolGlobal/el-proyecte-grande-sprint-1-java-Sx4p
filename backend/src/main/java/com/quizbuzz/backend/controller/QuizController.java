@@ -3,10 +3,12 @@ package com.quizbuzz.backend.controller;
 import com.quizbuzz.backend.DTO.QuizDetailDTO;
 import com.quizbuzz.backend.model.Quiz;
 import com.quizbuzz.backend.service.QuizService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NoPermissionException;
 import java.util.Set;
 
 @RestController
@@ -24,7 +26,7 @@ public class QuizController {
     public ResponseEntity<Quiz> getQuizById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(quizService.getQuizById(id));
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(404).build();
         }
@@ -35,13 +37,26 @@ public class QuizController {
         return quizService.createQuiz(quiz);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Quiz> updateQuizById(@PathVariable Long id, @RequestBody Quiz quiz) {
+        try {
+            return ResponseEntity.ok(quizService.updateQuizById(id, quiz));
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(403).build();
+        } catch (NoPermissionException e) {
+            return ResponseEntity.status(403).build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteQuizById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(quizService.deleteQuizById(id));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).build();
+        } catch (NoPermissionException e) {
+            return ResponseEntity.status(403).build();
         }
     }
 
@@ -53,10 +68,5 @@ public class QuizController {
     @GetMapping("/all/details/my/")
     public Set<QuizDetailDTO> getQuizzesDetailsOfUserById() {
         return quizService.getQuizzesDetailsOfUserById();
-    }
-
-    @PutMapping("/{id}")
-    public Quiz updateQuizById(@PathVariable Long id, @RequestBody Quiz quiz) {
-        return quizService.updateQuizById(id, quiz);
     }
 }
