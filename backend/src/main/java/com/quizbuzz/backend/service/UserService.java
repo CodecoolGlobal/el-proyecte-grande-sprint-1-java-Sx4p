@@ -22,12 +22,17 @@ public class UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
+    private final static int MINIMUM_PASSWORD_LENGTH = 8;
 
     public ResponseEntity<String> userRegistration(RegisterRequest request) {
         if (!userRepository.existsByUserName(request.getUsername())) {
-            String encryptedPassword = encoder.encode(request.getPassword());
-            AppUser newUser = AppUser.builder().userName(request.getUsername()).password(encryptedPassword).role(Role.USER).build();
-            userRepository.save(newUser);
+            if (request.getPassword().length() < MINIMUM_PASSWORD_LENGTH) {
+                String encryptedPassword = encoder.encode(request.getPassword());
+                AppUser newUser = AppUser.builder().userName(request.getUsername()).password(encryptedPassword).role(Role.USER).build();
+                userRepository.save(newUser);
+            } else {
+                return ResponseEntity.status(422).body("Not enough long password!");
+            }
         } else {
             return ResponseEntity.status(409).body("Already registered User!");
         }
@@ -43,5 +48,4 @@ public class UserService {
 
         return ResponseEntity.ok(token);
     }
-
 }
