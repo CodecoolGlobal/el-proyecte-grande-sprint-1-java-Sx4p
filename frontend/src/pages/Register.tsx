@@ -67,9 +67,10 @@ export default function Register(): ReactElement {
                     alignItems: 'center',
                 }}
             >
-                <CardMedia object-fit={"none"} component={"img"}
-                           sx={{padding: "1em 1em 0 1em", objectFit: "contain"}}
+                <CardMedia sx={{padding: "1em 1em 0 1em", objectFit: "contain"}}
+                           object-fit={"none"} component={"img"}
                            height="150px"
+                           width="150px"
                            image={quizLogo}
                 />
                 <Typography component="h1" variant="h5">
@@ -129,7 +130,7 @@ export default function Register(): ReactElement {
                     <Grid container>
                         <Grid item>
                             <Link href={"/login"} variant="body2">
-                                {"Have an account? Log In"}
+                                {"Have an account? Log In!"}
                             </Link>
                         </Grid>
                     </Grid>

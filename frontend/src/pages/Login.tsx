@@ -1,17 +1,16 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {ReactElement, useEffect, useState} from "react";
-import {Snackbar} from "@mui/material";
+import {CardMedia, Snackbar} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import {useNavigate} from "react-router-dom";
+import quizLogo from "../images/quizlogo.png";
 
 export default function Login(): ReactElement {
     const [loginFailed, setLoginFailed] = useState(false);
@@ -46,7 +45,7 @@ export default function Login(): ReactElement {
     };
 
     useEffect(() => {
-        if(localStorage.getItem("token") !== null){
+        if (localStorage.getItem("token") !== null) {
             navigate("/list");
         }
     }, []);
@@ -61,14 +60,28 @@ export default function Login(): ReactElement {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                    <LockOutlinedIcon/>
-                </Avatar>
+                <CardMedia sx={{padding: "1em 1em 0 1em", objectFit: "contain"}}
+                           object-fit={"none"} component={"img"}
+                           height="150px"
+                           width="150px"
+                           image={quizLogo}
+                />
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Login
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                     <TextField
+                        sx={{
+                            "& fieldset": {
+                                borderColor: "primary.light"
+                            },
+                            "&:hover fieldset": {
+                                borderWidth: 2
+                            },
+                            "& label": {
+                                color: "white"
+                            }
+                        }}
                         margin="normal"
                         required
                         fullWidth
@@ -79,6 +92,17 @@ export default function Login(): ReactElement {
                         autoFocus
                     />
                     <TextField
+                        sx={{
+                            "& fieldset": {
+                                borderColor: "primary.light"
+                            },
+                            "&:hover fieldset": {
+                                borderWidth: 2
+                            },
+                            "& label": {
+                                color: "white"
+                            }
+                        }}
                         margin="normal"
                         required
                         fullWidth
@@ -94,12 +118,12 @@ export default function Login(): ReactElement {
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                     >
-                        Sign In
+                        Log In
                     </Button>
                     <Grid container>
                         <Grid item>
                             <Link href={"/register"} variant="body2">
-                                {"Don't have an account? Sign Up"}
+                                {"Don't have an account? Register!"}
                             </Link>
                         </Grid>
                     </Grid>
