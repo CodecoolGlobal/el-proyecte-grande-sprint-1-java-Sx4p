@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import {Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import QuizListElement from "./QuizListElement";
+import {useNavigate} from "react-router-dom";
 
 export enum QuizDifficulty {
     EASY = "#2b9f00",
@@ -28,17 +29,30 @@ interface Props {
 }
 
 function QuizList({fetchUrl, siteTitle, editable}: Props): ReactElement {
+    const navigate = useNavigate();
     const [quizzes, setQuizzes] = useState<QuizDetails[] | null>(null);
 
     const fetchQuizzes = async () => {
-        const res = await fetch(fetchUrl);
-        const data = await res.json();
+        const res = await fetch(fetchUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("token")
+            }
+        });
+        if (res.status === 200) {
+            const data = await res.json();
+            setQuizzes(data);
+            console.log(true);
+        } else {
+            console.log(false);
+        }
 
-        console.log(data);
-        setQuizzes(data);
     }
 
     useEffect(() => {
+        if(localStorage.getItem("token") === null){
+            navigate("/login");
+        }
         fetchQuizzes();
     }, []);
 
