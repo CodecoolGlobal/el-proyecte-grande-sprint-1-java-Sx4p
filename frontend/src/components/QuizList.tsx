@@ -1,6 +1,6 @@
 import {ReactElement, useEffect, useState} from "react";
 import Container from "@mui/material/Container";
-import {Stack} from "@mui/material";
+import {Box, LinearProgress, Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import QuizListElement from "./QuizListElement";
 import {useNavigate} from "react-router-dom";
@@ -42,40 +42,47 @@ function QuizList({fetchUrl, siteTitle, editable}: Props): ReactElement {
         if (res.status === 200) {
             const data = await res.json();
             setQuizzes(data);
-            console.log(true);
         } else {
-            console.log(false);
+            localStorage.clear();
+            navigate("/login");
         }
-
     }
 
     useEffect(() => {
-        if(localStorage.getItem("token") === null){
+        if (localStorage.getItem("token") === null) {
             navigate("/login");
         }
+        setQuizzes(null);
         fetchQuizzes();
-    }, []);
+    }, [fetchUrl]);
 
-    if (quizzes) {
-        return (
-            <Container maxWidth={"lg"}>
-                <Typography variant={"h4"} mb={4}>
-                    {siteTitle}
-                </Typography>
-                <Stack bgcolor={"primary.light"} padding={"30px"} borderRadius={"40px"}>
-                    {quizzes.map((quiz: QuizDetails, i: number) => (
-                        <QuizListElement key={i}
-                                         id={quiz.id}
-                                         name={quiz.name}
-                                         numberOfQuestions={quiz.numberOfQuestions}
-                                         difficulty={QuizDifficulty[quiz.difficulty as DifficultyDescription]}
-                                         author={quiz.author}
-                                         editable={editable}/>
-                    ))}
-                </Stack>
-            </Container>
-        );
-    } else return <></>;
+    return (
+        <Container maxWidth={"lg"}>
+            <Typography variant={"h4"} mb={4}>
+                {siteTitle}
+            </Typography>
+            <Stack bgcolor={"primary.light"} padding={"30px"} borderRadius={"40px"}>
+                {quizzes ?
+                    (
+                        <>
+                            {quizzes.map((quiz: QuizDetails, i: number) => (
+                                <QuizListElement key={i}
+                                                 id={quiz.id}
+                                                 name={quiz.name}
+                                                 numberOfQuestions={quiz.numberOfQuestions}
+                                                 difficulty={QuizDifficulty[quiz.difficulty as DifficultyDescription]}
+                                                 author={quiz.author}
+                                                 editable={editable}/>
+                            ))}
+                        </>
+                    ) :
+                    (<Box sx={{width: '100%'}}>
+                        <LinearProgress sx={{height: "10px", borderRadius: "50px"}}/>
+                    </Box>)
+                }
+            </Stack>
+        </Container>
+    );
 }
 
 export default QuizList;

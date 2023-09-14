@@ -25,12 +25,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "/list",
-                element: <QuizList editable={false} siteTitle={"Available quizzes"} fetchUrl={"/api/quiz/all/details"}/>
+                element: <QuizList editable={false} siteTitle={"All available quizzes:"} fetchUrl={"/api/quiz/all/details"}/>
             },
             {
                 path: "/myquizzes",
-                element: <QuizList editable={true} siteTitle={"Quizzes made by USERNAME"}
-                                   fetchUrl={"/api/quiz/all/details"}/>
+                element: <QuizList editable={true} siteTitle={"Quizzes made by you:"}
+                                   fetchUrl={"/api/quiz/all/details/my"}/>
             },
             {
                 path: "/create/quiz",
