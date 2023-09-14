@@ -12,6 +12,7 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import Divider from '@mui/material/Divider';
 import {OverridableComponent} from "@mui/material/OverridableComponent"
 import VisibilitySensor from 'react-visibility-sensor';
+import Box from "@mui/material/Box";
 
 interface Detail {
     icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string },
@@ -45,7 +46,7 @@ function Home() {
             <Container component={"img"} src={QuizBuzzLogo} alt={"QuizBuzz logo"} height={"auto"}/>
             <Typography sx={{fontSize: "30px"}}>Are you ready to test your knowledge, challenge your brain, and have a
                 blast while doing it? Look no further!
-                <Typography sx={{color: "primary.dark", fontSize: "30px", display: "inline"}}> QuizBuzz </Typography>
+                <Box component="span" sx={{color: "primary.dark"}}> QuizBuzz </Box>
                 is your one-stop destination for an exciting and
                 educational quiz experience. Whether you're a trivia enthusiast or just looking for a fun way to spend
                 your time, we've got something for everyone.</Typography>
@@ -71,8 +72,8 @@ function Home() {
                             borderRadius: "20px",
                             borderColor: "#242426"
                         }}>
-                            {details.map((detail: Detail) => (
-                                <Card sx={{
+                            {details.map((detail: Detail, index: number) => (
+                                <Card key={index} sx={{
                                     margin: "30px", minWidth: "350px", backgroundColor: "#242426",
                                     '&:hover': {backgroundColor: "#4b4b4d", color: "primary.dark"}
                                 }}>
