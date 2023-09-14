@@ -129,7 +129,7 @@ export default function Login(): ReactElement {
                     </Grid>
                 </Box>
             </Box>
-            <Snackbar open={loginFailed} autoHideDuration={5000}>
+            <Snackbar open={loginFailed} autoHideDuration={5000} onClose={() => setLoginFailed(false)}>
                 <Alert severity={"error"}>
                     Incorrect username/password!
                 </Alert>

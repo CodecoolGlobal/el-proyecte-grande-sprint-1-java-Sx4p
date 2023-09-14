@@ -1,7 +1,7 @@
-import {ReactElement} from "react";
+import {ReactElement, useState} from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import {Card, CardActions, CardContent, Tooltip} from "@mui/material";
+import {Card, CardActions, CardContent, Snackbar, Tooltip} from "@mui/material";
 import Button from "@mui/material/Button";
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import {QuizDetails} from "./QuizList";
@@ -10,18 +10,24 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteQuizButton from "./DeleteQuizButton";
 import {useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import * as React from "react";
 
 export default function QuizListElement({id, name, author, numberOfQuestions, difficulty, editable}: QuizDetails): ReactElement {
     const navigate = useNavigate();
+    const [deleteFailed, setDeleteFailed] = useState(false);
 
     const handleDeleteQuiz = async () => {
         const res = await fetch("/api/quiz/" + id, {
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("token")
+            },
             method: "DELETE"
         });
         if (res.ok) {
             window.location.reload();
         } else {
-            //TODO display error message
+            setDeleteFailed(true);
         }
     };
 
@@ -81,6 +87,11 @@ export default function QuizListElement({id, name, author, numberOfQuestions, di
                     </CardActions>
                 </Card>
             </Grid>
+            <Snackbar open={deleteFailed} autoHideDuration={5000} onClose={() => setDeleteFailed(false)}>
+                <Alert severity={"error"}>
+                    You don't have permission to delete this quiz!
+                </Alert>
+            </Snackbar>
         </>
     );
 }

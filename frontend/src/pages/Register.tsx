@@ -136,12 +136,12 @@ export default function Register(): ReactElement {
                     </Grid>
                 </Box>
             </Box>
-            <Snackbar open={registrationFailed} autoHideDuration={5000}>
+            <Snackbar open={registrationFailed} autoHideDuration={5000} onClose={() => setRegistrationFailed(false)}>
                 <Alert severity={"error"}>
                     {errorMessage}
                 </Alert>
             </Snackbar>
-            <Snackbar open={registered} autoHideDuration={5000}>
+            <Snackbar open={registered} autoHideDuration={5000} onClose={() => setRegistered(false)}>
                 <Alert severity={"success"}>
                     Successful registration! Please log in!
                 </Alert>
