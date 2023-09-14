@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Button from "@mui/material/Button";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import {ChangeEvent, useEffect, useState} from "react";
-import ErrorAlert from "./ErrorAlert";
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import Alert from "@mui/material/Alert";
 
 interface Props {
     handleSaveQuestion: Function
@@ -104,7 +104,11 @@ export const AddQuestionPopup = ({handleSaveQuestion}: Props) => {
                         Add question
                     </Button>
                 </DialogActions>
-                {isInvalidQuestion && <ErrorAlert message={"Please fill out every field!"}/>}
+                <Snackbar open={isInvalidQuestion} autoHideDuration={5000} onClose={() => setIsInvalidQuestion(false)}>
+                    <Alert severity={"error"}>
+                        Please fill out every field!
+                    </Alert>
+                </Snackbar>
             </Dialog>
         </Box>
     );

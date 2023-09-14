@@ -6,7 +6,7 @@ import {
     TextField,
     Typography,
     Stack,
-    FormLabel, FormControl
+    FormLabel, FormControl, Snackbar
 } from "@mui/material";
 import Radio from '@mui/material/Radio';
 import {ReactElement, useEffect, useState} from "react";
@@ -14,7 +14,7 @@ import {Question, Answer, QuestionListElement} from "./QuestionListElement";
 import {AddQuestionPopup} from "./AddQuestionPopup";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Quiz} from "@mui/icons-material";
-import ErrorAlert from "./ErrorAlert";
+import Alert from "@mui/material/Alert";
 
 export interface Quiz {
     id: number,
@@ -146,7 +146,11 @@ export default function QuizForm({quiz, onSave}: Props): ReactElement {
                     </Button>
                 </FormGroup>
             </FormControl>
-            {isInvalidQuiz && <ErrorAlert message={"Please fill out every field!"}/>}
+            <Snackbar open={isInvalidQuiz} autoHideDuration={5000} onClose={() => setIsInvalidQuiz(false)}>
+                <Alert severity={"error"}>
+                    Please fill out every field!
+                </Alert>
+            </Snackbar>
         </form>
     );
 }
