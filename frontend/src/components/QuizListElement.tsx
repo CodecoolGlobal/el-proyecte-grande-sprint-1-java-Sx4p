@@ -64,9 +64,9 @@ export default function QuizListElement({id, name, author, numberOfQuestions, di
                             Questions: {numberOfQuestions}
                         </Typography>
                         <LightbulbIcon htmlColor={difficulty} sx={{backgroundColor: "#938aff", borderRadius: "50px"}}/>
-                        <Typography>
-                            Author: {author}
-                        </Typography>
+                        {/*<Typography>*/}
+                        {/*    Author: {author}*/}
+                        {/*</Typography>*/}
                     </CardContent>
                     <CardActions sx={{width: "20%"}}>
                         <Tooltip title={numberOfQuestions == 0 ? "This quiz is not playable yet, because it has no questions." : null} arrow={true}>

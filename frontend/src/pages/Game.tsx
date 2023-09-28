@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import QuizSummary from "../components/QuizSummary";
+import {CardMedia} from "@mui/material";
+import quizLogo from "../images/quizlogo.png";
 
 interface Quiz {
     id: number,
@@ -87,7 +89,13 @@ function Game(): ReactElement {
                         <Typography variant={"h4"}
                                     color={"black"}>Question {currentRound} of {quiz.questions.length}:</Typography>
                         <Typography color={"black"}>Correct: {correctAnswers}</Typography>
-                        <Box sx={{marginTop: "15vh"}}>
+                        <Box sx={{marginTop: "3vh"}}>
+                            <CardMedia sx={{padding: "1em 1em 0 1em", objectFit: "contain"}}
+                                       object-fit={"none"} component={"img"}
+                                       height="150px"
+                                       width="150px"
+                                       image={quizLogo}
+                            />
                             <Question onAnswer={handleAnswer} question={quiz.questions[currentRound - 1]}/>
                         </Box>
                     </>}
