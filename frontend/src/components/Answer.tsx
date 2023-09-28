@@ -16,7 +16,8 @@ function Answer({answerText, onAnswer, correct}: Props): ReactElement {
                 <Paper
                     sx={{
                         padding: 2, borderRadius: "50px", margin: "5px",
-                        backgroundColor: "#f1f0fc", boxShadow: 3, color: "black", width: "100%"
+                        backgroundColor: "#cecbf5", boxShadow: 3, color: "black", width: "100%",
+                        "&:hover": { backgroundColor: "secondary.main" }
                     }}>
                     <Typography sx={{color: "black", textAlign: "center"}}>{answerText}</Typography>
                 </Paper>
