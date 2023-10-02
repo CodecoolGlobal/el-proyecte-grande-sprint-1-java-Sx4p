@@ -82,14 +82,21 @@ function Game(): ReactElement {
     if (quiz != null) {
         return (<>
             <Container
-                sx={{backgroundColor: "background.paper", width: "80vw", height: "80vh", borderRadius: "50px", paddingTop: "30px"}}>
+                sx={{
+                    backgroundColor: "background.paper",
+                    width: "80vw",
+                    borderRadius: "50px",
+                    paddingTop: "30px",
+                    paddingBottom: "30px",
+                    marginBottom: "30px"
+                }}>
                 {gameFinished ? <QuizSummary correctAnswers={correctAnswers}
                                              incorrectAnswers={quiz.questions.length - correctAnswers}/> :
                     <>
                         <Typography variant={"h4"}
                                     color={"black"}>Question {currentRound} of {quiz.questions.length}:</Typography>
                         <Typography color={"black"}>Correct: {correctAnswers}</Typography>
-                        <Box sx={{marginTop: "3vh"}}>
+                        <Box sx={{marginTop: "10px"}}>
                             <CardMedia sx={{padding: "1em 1em 0 1em", objectFit: "contain"}}
                                        object-fit={"none"} component={"img"}
                                        height="150px"
