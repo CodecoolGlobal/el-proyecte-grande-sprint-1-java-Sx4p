@@ -1,0 +1,15 @@
+FROM maven:3.9.4 AS build
+#ENV DB_DATABASE $DB_DATABASE
+#ENV DB_USER $DB_USER
+#ENV DB_PASSWORD $DB_PASSWORD
+#ENV SECRET_KEY $SECRET_KEY
+WORKDIR /bebuild
+COPY backend/src src
+COPY backend/pom.xml ./
+RUN mvn clean package
+
+FROM eclipse-temurin:latest
+WORKDIR /beserver
+COPY --from=build bebuild/target/backend-0.0.1-SNAPSHOT.jar quizbuzz-backend.jar
+EXPOSE 8080
+CMD ["java","-jar","quizbuzz-backend.jar"]

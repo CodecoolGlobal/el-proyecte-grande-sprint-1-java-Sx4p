@@ -1,0 +1,30 @@
+version: '3.8'
+name: 'quizbuzz'
+
+services:
+  backend:
+    image: 'quizbuzzbe:latest'
+    container_name: 'QuizBuzzBackend'
+    build:
+      context: .
+      dockerfile: 'DockerfileBE'
+    ports:
+      - '8080:8080'
+    environment:
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+
+  frontend:
+    image: 'quizbuzzfe:latest'
+    build:
+      context: .
+      dockerfile: DockerfileFE
+    container_name: QuizBuzzFrontend
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    depends_on:
+      - backend
